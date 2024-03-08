@@ -4,11 +4,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import model.Person;
 import repository.PersonRepository;
+import utils.TableUtils;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
+
 public class PersonService {
     private final PersonRepository personRepository;
 public PersonService() {
@@ -37,11 +36,27 @@ public PersonService() {
                 .stream()
                 .sorted(
                         Comparator.comparing(Person::getFullName).reversed()
-                        //  (a,b)-> b.getId() - a.getId()
                 )
                 .toList();
     }
 
+    public static void searchByAddress(String searchCountry, PersonService personService) {
+        List<Person> personListByCountry = personService.getAllPerson()
+                .stream()
+                .filter(person -> person.getAddress().equalsIgnoreCase(searchCountry))
+                .toList();
+        TableUtils.renderPersonTable(personListByCountry);
+    }
+    public static void searchByID(int finalSearchID,PersonService personService) {
+        Person optionalPerson =
+                personService.getAllPerson()
+                        .stream()
+                        .filter(person -> person.getId() == finalSearchID)
+                        .findFirst()
+                        .orElseThrow(() -> new ArithmeticException("Whatever exception!! "));
+        TableUtils.renderPersonTable(
+                Collections.singletonList(optionalPerson));
+    }
     public int createPerson(Scanner input) {
         return personRepository.addNewPerson(new Person().addPerson(input));
     }

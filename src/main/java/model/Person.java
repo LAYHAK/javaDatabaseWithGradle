@@ -21,8 +21,7 @@ public class Person extends User{
     private String gender;
     private String email;
     private String address;
-    private int user_id;
-
+    int user_id;
 
     public Person addPerson(Scanner input){
         //auto increment from database
@@ -36,6 +35,8 @@ public class Person extends User{
         address = input.nextLine();
         System.out.println("Enter email address : ");
         email = input.nextLine();
+        //get user id from user that login
+
         user_id = 1;
 
 
