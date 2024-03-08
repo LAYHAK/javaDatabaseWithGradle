@@ -3,12 +3,12 @@ import java.sql.*;
 @Deprecated
 public class DatabaseBasicDemo {
     public static void main(String[] args) {
-        String databaseUrl="jdbc:postgresql://localhost:5432/javafinaldb";
+        String databaseUrl="jdbc:postgresql://localhost:5432/java_db";
         String username="postgres";
-        String password="postgres@2023";
+        String password="12345678";
 
         String getAllPersonSQL= """
-                SELECT * FROM person_tb;
+                SELECT * FROM person;
                 """;
         try(
                 Connection con = DriverManager.getConnection(databaseUrl,username,password);

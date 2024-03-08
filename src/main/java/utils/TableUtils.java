@@ -1,6 +1,7 @@
 package utils;
 
 import model.Person;
+import model.User;
 import org.nocrala.tools.texttablefmt.BorderStyle;
 import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
@@ -92,7 +93,53 @@ public class TableUtils {
 
     }
 
-    public static void renderObjectToTable(List<? extends Person> data) {
+    public  static void renderPersonTable(List<Person> data) {
+        if (data == null || data.isEmpty()) {
+            System.out.println("There is no record to render the table");
+            return;
+        }
+        Table table = new Table(6, BorderStyle.UNICODE_BOX_HEAVY_BORDER,
+                ShownBorders.SURROUND_HEADER_FOOTER_AND_COLUMNS);
+        table.addCell("ID");
+        table.addCell("Full Name");
+        table.addCell("Gender");
+        table.addCell("Email");
+        table.addCell("Address");
+        table.addCell("User ID");
+        for (Person person : data) {
+            table.addCell(person.getId() + "");
+            table.addCell(person.getFullName());
+            table.addCell(person.getGender());
+            table.addCell(person.getEmail());
+            table.addCell(person.getAddress());
+            table.addCell(person.getUser_id() + "");
+        }
+        table.addCell("Total Records ", 3);
+        table.addCell(data.size() + "", 3);
+        System.out.println(table.render());
+
+    }
+    public static void renderUserTable(List<User> data) {
+        if (data == null || data.isEmpty()) {
+            System.out.println("There is no record to render the table");
+            return;
+        }
+        Table table = new Table(3, BorderStyle.UNICODE_BOX_HEAVY_BORDER,
+                ShownBorders.SURROUND_HEADER_FOOTER_AND_COLUMNS);
+        table.addCell("ID");
+        table.addCell("Username");
+        table.addCell("Password");
+        for (User user : data) {
+            table.addCell(user.getId() + "");
+            table.addCell(user.getUsername());
+            table.addCell(user.getPassword());
+        }
+        table.addCell("Total Records ", 1);
+        table.addCell(data.size() + "", 2);
+        System.out.println(table.render());
+
+    }
+    public static void renderObjectToTable(List<?> data) {
         if (data == null || data.isEmpty()) {
             System.out.println("There is no record to render the table");
             return;

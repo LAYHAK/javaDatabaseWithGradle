@@ -1,6 +1,6 @@
 
 # we should be ignoring the application.properties file as well since we use it to store the credentials 
-
+.idea
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar

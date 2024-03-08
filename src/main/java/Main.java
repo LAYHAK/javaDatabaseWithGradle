@@ -1,45 +1,25 @@
 import com.github.javafaker.Faker;
 import model.Person;
+import model.User;
 import repository.PersonRepository;
+import repository.UserRepository;
 import service.PersonService;
 import utils.TableUtils;
 import view.MainView;
 
 import java.util.*;
-import java.util.concurrent.ThreadFactory;
-//        Person person = new Person(1001,"james ","male","james@gmail.com","cambodia");
 
-//        Person person = Person.builder()
-//                .id(1001)
-//                .fullName("Jenny ")
-//                .gender("female")
-//                .email("jenny@gmail.com")
-//                .address("siem reap")
-//                .build();
-
-//        Person person = new Person()
-//                .setFullName("James")
-//                .setId(1001)
-//                .setGender("male");
-//
-//        System.out.println(person.getFullName());
-//        System.out.println(person);
-
-//        PersonRepository.getAllPerson().forEach(
-//                System.out::println
-//        );
-//        System.out.println("This is the second data : ");
-//        PersonRepository.getAllPerson().forEach(
-//                System.out::println
-//        );
 
 public class Main {
     private static PersonService personService =
             new PersonService(new PersonRepository());
-
+    private static UserRepository userRepository =
+            new UserRepository();
+    private static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
         int option;
+        User user = new User();
+        user.checkUser(input);
         do {
             option = MainView.renderMain(input);
             switch (option) {
@@ -87,17 +67,17 @@ public class Main {
                         switch (showOption) {
                             case 1:
 
-                                TableUtils.renderObjectToTable(personService.getAllPerson());
+                                TableUtils.renderPersonTable(personService.getAllPerson());
                                 break;
                             case 2:
                                 // descending id
-                                TableUtils.renderObjectToTable(
+                                TableUtils.renderPersonTable(
                                         personService.getAllPersonDescendingByID()
                                 );
                                 break;
                             case 3:
                                 // descending name
-                                TableUtils.renderObjectToTable(
+                                TableUtils.renderPersonTable(
                                         personService.getAllPersonDescendingByName()
                                 );
                                 break;
@@ -132,7 +112,7 @@ public class Main {
                                                     .filter(person -> person.getId() == finalSearchID)
                                                     .findFirst()
                                                     .orElseThrow(() -> new ArithmeticException("Whatever exception!! "));
-                                    TableUtils.renderObjectToTable(
+                                    TableUtils.renderPersonTable(
                                             Collections.singletonList(optionalPerson));
                                 } catch (Exception ex) {
                                     ex.printStackTrace();
@@ -141,8 +121,22 @@ public class Main {
 
                                 break;
                             case 2:
+                                System.out.println("Enter Person Gender to search:");
+                                String searchGender = input.next();
+                                List<Person> personList = personService.getAllPerson()
+                                        .stream()
+                                        .filter(person -> person.getGender().equalsIgnoreCase(searchGender))
+                                        .toList();
+                                TableUtils.renderPersonTable(personList);
                                 break;
                             case 3:
+                                System.out.println("Enter Person Country to search:");
+                                String searchCountry = input.next();
+                                List<Person> personListByCountry = personService.getAllPerson()
+                                        .stream()
+                                        .filter(person -> person.getAddress().equalsIgnoreCase(searchCountry))
+                                        .toList();
+                                TableUtils.renderPersonTable(personListByCountry);
                                 break;
                         }
 
@@ -151,13 +145,20 @@ public class Main {
                 }
                 break;
                 case 6:
-                    System.out.println("Exit from the program!!! ");
+                    System.out.println("Generating Random Person Data");
+                    System.out.println("Enter the number of person to generate: ");
+                    int n = input.nextInt();
+                    personService.generateRandomPerson(n);
+                    personService.addNewPerson(personService.generateRandomPerson(n));
+                    break;
+                case 7:
+                    System.out.println("Good Bye");
                     break;
                 default:
                     System.out.println("Invalid Option!!!!!! ");
                     break;
             }
-        } while (option != 6);
+        } while (option != 7);
 
 
     }

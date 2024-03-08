@@ -1,5 +1,7 @@
 package service;
 
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import model.Person;
 import repository.PersonRepository;
 
@@ -7,10 +9,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 public class PersonService {
     private final PersonRepository personRepository;
-
+public PersonService() {
+    personRepository = new PersonRepository();
+}
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
@@ -41,6 +44,10 @@ public class PersonService {
 
     public int createPerson(Scanner input) {
         return personRepository.addNewPerson(new Person().addPerson(input));
+    }
+
+    public List<Person> generateRandomPerson(int n) {
+        return personRepository.generatePersonData(n);
     }
 
 
@@ -79,6 +86,16 @@ public class PersonService {
         } catch (NoSuchElementException ex) {
             System.out.println("There is no element with id = "+id);
             return 0;
+        }
+    }
+
+    public void addNewPerson(List<Person> people) {
+        try {
+            for (Person person : people) {
+                personRepository.addNewPerson(person);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

@@ -13,6 +13,7 @@ public class MainView {
             "Delete Person",
             "Show Person Information",
             "Search Person Information",
+            "Generate Random Person",
             "Exit"));
    public static int renderMain(Scanner input){
        TableUtils.renderMenu(mainMenu, "Person Management System");
